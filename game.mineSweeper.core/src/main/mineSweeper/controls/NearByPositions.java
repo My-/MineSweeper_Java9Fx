@@ -3,16 +3,13 @@ package mineSweeper.controls;
 
 import mineSweeper.core.Position;
 
-import java.util.Iterator;
-import java.util.List;
-import java.util.Spliterator;
-import java.util.Spliterators;
+import java.util.*;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
 class NearByPositions implements Iterable<Position>{
 
-    public final List<Position> POSITION_LIST = List.of(
+    public static final Set<Position> POSITION_LIST = Set.of(
             new Position(0, -1), new Position(0, 1),
             new Position(1, -1), new Position(-1, -1),
             new Position(1, 0), new Position(-1, 0),

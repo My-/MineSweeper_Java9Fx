@@ -56,7 +56,7 @@ public class Position implements Comparable<Position>{
      * @param pos position to check.
      * @return true if positions are cardinal to each other. Equal positions isn't cardinal.
      */
-    public boolean cardinal(Position pos){
+    public boolean isCardinal(Position pos){
         if( this.equals(pos) ){ return false; }
         return X == pos.X || Y == pos.Y;
     }

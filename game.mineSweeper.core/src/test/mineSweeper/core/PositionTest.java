@@ -93,10 +93,12 @@ class PositionTest {
 
     @Test
     void hashCode_Test() {
+        //TODO: hashCode() test
     }
 
     @Test
     void toString_Test() {
+        // TODO: toString() test
     }
 
 }

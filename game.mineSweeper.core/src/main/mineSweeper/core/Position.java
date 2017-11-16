@@ -50,13 +50,30 @@ public class Position implements Comparable<Position>{
     public int getY() { return Y; }
 
     /**
-     * Checks if given position is cardinal.
+     * Checks if given position is cardinal and close.
      * Cardinal is North, East, South and West only( not NorthEast or any other "corner" direction).
+     * For global cardinal use: isCardinal(Position pos, boolean global)
      *
      * @param pos position to check.
      * @return true if positions are cardinal to each other. Equal positions isn't cardinal.
      */
     public boolean isCardinal(Position pos){
+        if( this.equals(pos) ){ return false; }
+        return X == pos.X && Math.abs(Y -pos.Y) == 1
+                || Y == pos.Y && Math.abs(X -pos.X) == 1;
+    }
+
+    /**
+     * Checks if given position is cardinal.
+     * Cardinal is North, East, South and West only( not NorthEast or any other "corner" direction).
+     * For global cardinal use: isCardinal(Position pos, boolean global)
+     *
+     * @param pos position to check.
+     * @param global if true checks global, false checks close position
+     * @return true if positions are cardinal to each other. Equal positions isn't cardinal.
+     */
+    public boolean isCardinal(Position pos, boolean global){
+        if( !global ){ return this.isCardinal(pos); }
         if( this.equals(pos) ){ return false; }
         return X == pos.X || Y == pos.Y;
     }

@@ -2,31 +2,69 @@ package mineSweeper.core;
 
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class PositionTest {
     @Test
     void of_Test() {
+        Position testIt = Position.of(1,1);
+
+        assertEquals(new Position(1,1).getClass(), testIt.getClass());
     }
 
     @Test
     void getX_Test() {
+        Position testIt = Position.of(1,1);
+
+        assertEquals(1, testIt.getX());
     }
 
     @Test
     void getY_Test() {
+        Position testIt = Position.of(1,1);
+
+        assertEquals(1, testIt.getX());
     }
 
     @Test
     void isCardinal_Test() {
+        Position testIt = Position.of(1,1);
+        List<Position> cardinalList = List.of(
+                new Position(0,1), new Position(2,1),
+                new Position(1,0), new Position(1,2)
+        );
+        List<Position> notCardinal = List.of(
+                new Position(0,0), new Position(2,0),
+                new Position(2,0), new Position(2,2),
+                new Position(2,5), new Position(-2,-1),
+                new Position(3,-8), new Position(0,-1)
+        );
+        List<Position> cardinalGlobal = List.of(
+                new Position(1,8), new Position(1,-6),
+                new Position(-5,1), new Position(5,1)
+        );
+
+
+        cardinalList.stream().forEach(it->
+                assertTrue(testIt.isCardinal(it), "Error in cardinal: "+ it));
+        notCardinal.stream().forEach(it->
+                assertFalse(testIt.isCardinal(it), "Error in NOT cardinal: "+ it));
+        cardinalGlobal.stream().forEach(it->
+                assertTrue(testIt.isCardinal(it, true), "Error in cardinal and global: "+ it));
+        notCardinal.stream().forEach(it->
+                assertFalse(testIt.isCardinal(it, true), "Error in NOT cardinal and global: "+ it));
     }
 
     @Test
     void compareTo_Test() {
+
     }
 
     @Test
     void equals_Test() {
+        
     }
 
     @Test

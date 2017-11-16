@@ -28,4 +28,13 @@ public class MineMapPosition extends Position {
         }
 
     }
+
+    public static boolean isMine(Position position){
+        if( position instanceof MineMapPosition) {
+            return ((MineMapPosition) position).getValue() == MINE;
+        }
+        return false;
+    }
+
+
 }

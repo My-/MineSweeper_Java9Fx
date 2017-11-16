@@ -59,12 +59,36 @@ class PositionTest {
 
     @Test
     void compareTo_Test() {
+        Position testIt = Position.of(1,1);
+        List<Position> smaler = List.of(
+                new Position(0,0), new Position(0,1),
+                new Position(1,0), new Position(-1,-1)
+        );
+        List<Position> bigger = List.of(
+                new Position(2,2), new Position(2,1),
+                new Position(1,2), new Position(2,3)
+        );
 
+        smaler.stream().forEach(it->
+                assertTrue(it.compareTo(testIt) < 0,
+                        String.format("Should be (%s) smaller than (%s)", it, testIt)));
+        smaler.stream().forEach(it->
+                assertFalse(it.compareTo(testIt) > 0,
+                        String.format("Should be (%s) smaller than (%s)", it, testIt)));
+        bigger.stream().forEach(it->
+                assertTrue(it.compareTo(testIt) > 0,
+                        String.format("Should be (%s) bigger than (%s)", it, testIt)));
+        bigger.stream().forEach(it->
+                assertFalse(it.compareTo(testIt) < 0,
+                        String.format("Should be (%s) bigger than (%s)", it, testIt)));
+        assertTrue(testIt.compareTo(new Position(1,1)) == 0);
     }
 
     @Test
     void equals_Test() {
-        
+        Position testIt = Position.of(1,1);
+
+        assertTrue(testIt.equals(new Position(1,1)));
     }
 
     @Test

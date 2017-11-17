@@ -1,6 +1,7 @@
 package mineSweeper.core;
 
 import java.util.*;
+import java.util.function.Predicate;
 
 import static java.util.stream.Collectors.toList;
 
@@ -10,6 +11,9 @@ public class MineMap {
     private int minesLeft;
     private final Set<MineMapPosition> map;
 
+//    public final static Predicate<MineMapPosition> isMine = p -> p.getValue() == MineMapPosition.MINE;
+    public final static Predicate<MineMapPosition> isMine = MineMapPosition::isMine; // kinda stupid way
+    public final static Predicate<MineMapPosition> isNumber = p -> 0 <= p.getValue() && p.getValue() < 10;
 
     public MineMap( String map) {
         this.map = createMap(map);
@@ -82,9 +86,22 @@ public class MineMap {
         return map;
     }
 
+    /**
+     * Counts mines in a given map.
+     *
+     * @param map were mines will be checked
+     * @return number of mines in a given map
+     */
     private static int countMines(Set<MineMapPosition> map){
         return (int)map.stream()
-                .filter(MineMapPosition::isMine)
+                // same thing in 7 ways
+                .filter(it -> it.getValue() == MineMapPosition.MINE)    // use method as instance of MinMapPosition class
+                .filter(it -> it.getValue() == it.MINE)                 // use method as instance of MinMapPosition class
+                .filter(it -> MineMapPosition.isMine(it))               // use static method in MinMapPosition class (must be static)
+                .filter(it -> it.isMine(it))        // use method as instance of MinMapPosition class
+                .filter(MineMapPosition::isMine)    // use static method in MinMapPosition class (must be static)
+                .filter(MineMapPosition.isMine)     // use Predicate in MinMapPosition class
+                .filter(isMine)                     // use Predicate in MineMap (this) class.
                 .count();
     }
 

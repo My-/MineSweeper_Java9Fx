@@ -1,4 +1,9 @@
+/*
+Mindaugas Sharskus
+@dateCreated: 14/11/2017
+ */
 package mineSweeper.core;
+
 
 public class Position implements Comparable<Position>{
     /**

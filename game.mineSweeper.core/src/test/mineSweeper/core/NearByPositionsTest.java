@@ -40,6 +40,7 @@ class NearByPositionsTest {
         Position pos = new Position(0,0);
         NearByPositions testIt = NearByPositions.of(pos);
         // TODO: make normal test!
+        System.out.println("Inside: NearByPositionTest.stream()");
         testIt.stream().sorted().forEachOrdered(System.out::println);
     }
 

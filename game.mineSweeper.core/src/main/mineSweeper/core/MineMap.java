@@ -3,41 +3,36 @@ package mineSweeper.core;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Predicate;
-import java.util.stream.Stream;
 
 import static java.util.stream.Collectors.toList;
 
 public class MineMap {
 
     public final int MINES;
-    private int minesLeft;
-    private final Map<Position, PosValue> map; // TODO: convert to the Map<Position, ... >
+
+    final Map<Position, PosValue> map; // TODO: convert to the Map<Position, ... >
     static int size_X, size_Y;
 
-//    public final static Predicate<PosValue> isMine = p -> p.getValue() == PosValue.MINE;
-    public final static Predicate<PosValue> isMine = PosValue::isMine; // kinda stupid way
-    public final static Predicate<PosValue> isNumber = p -> 0 <= p.getValue() && p.getValue() < 10;
 
+
+    /************************************************************/
+    // Object creation
     public MineMap( String map) {
         this.map = createMap(map);
         this.MINES = countMines(this.map);
-        minesLeft = MINES;
+        ;
         setLimits(map);
     }
 
+    /************************************************************/
 
-    public int getMinesLeft() {
-        return minesLeft;
-    }
 
-    int get(Position position){
+
+    int getValue(Position position){
         return map.get(position).getValue();
     }
 
-    public MineMap markMine(Position position){
-        minesLeft--;
-        return this;
-    }
+
 
     @Override
     public String toString() {
@@ -128,6 +123,8 @@ public class MineMap {
      * @return number of mines in a given map
      */
     private static int countMines(Map<Position, PosValue> map){
+        Predicate<PosValue> isMine = PosValue::isMine;
+
         return (int)map.values().stream()
                 // same thing in 7 ways
                 .filter(it -> it.getValue() == PosValue.MINE)    // use method as instance of MinMapPosition class

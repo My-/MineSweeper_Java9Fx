@@ -9,7 +9,7 @@ public class MineMap {
 
     public final int MINES;
     private int minesLeft;
-    private final Set<MineMapPosition> map;
+    private final Set<MineMapPosition> map; // TODO: convert to the Map<Position, ... >
 
 //    public final static Predicate<MineMapPosition> isMine = p -> p.getValue() == MineMapPosition.MINE;
     public final static Predicate<MineMapPosition> isMine = MineMapPosition::isMine; // kinda stupid way
@@ -21,8 +21,14 @@ public class MineMap {
         minesLeft = MINES;
     }
 
+
+
     public int getMinesLeft() {
         return minesLeft;
+    }
+
+    int get(Position position){
+        return map.
     }
 
     public MineMap markMine(Position position){

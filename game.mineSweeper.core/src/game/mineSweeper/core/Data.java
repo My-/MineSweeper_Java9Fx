@@ -1,4 +1,4 @@
-package mineSweeper;
+package game.mineSweeper.core;
 
 public class Data {
     public static final String[][] MAP = new String[][]{

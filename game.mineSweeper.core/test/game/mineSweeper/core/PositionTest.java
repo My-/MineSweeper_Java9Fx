@@ -1,5 +1,6 @@
-package mineSweeper.core;
+package game.mineSweeper.core;
 
+import game.mineSweeper.core.Position;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;

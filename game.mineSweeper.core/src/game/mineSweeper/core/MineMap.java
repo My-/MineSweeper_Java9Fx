@@ -1,4 +1,4 @@
-package mineSweeper.core;
+package game.mineSweeper.core;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;

@@ -1,9 +1,10 @@
-package mineSweeper.core;
+package game.mineSweeper.core;
 
+import game.mineSweeper.core.NearByPositions;
+import game.mineSweeper.core.Position;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
-import mineSweeper.core.*;
 
 import java.util.HashSet;
 import java.util.Set;

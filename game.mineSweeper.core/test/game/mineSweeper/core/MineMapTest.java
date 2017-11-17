@@ -1,10 +1,11 @@
-package mineSweeper.core;
+package game.mineSweeper.core;
+
 
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import mineSweeper.Data;
+
 
 class MineMapTest {
     @Test

@@ -1,8 +1,6 @@
-package mineSweeper.core;
+package game.mineSweeper.core;
 
 import java.util.function.Predicate;
-
-import mineSweeper.Data;
 
 public class Game {
 

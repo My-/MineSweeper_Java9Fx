@@ -1,4 +1,4 @@
-package mineSweeper.core;
+package game.mineSweeper.core;
 
 /**
  * Thrown to indicate what we "stepped" on the mine.

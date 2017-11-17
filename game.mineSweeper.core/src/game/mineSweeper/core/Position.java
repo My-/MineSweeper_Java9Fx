@@ -2,7 +2,7 @@
 Mindaugas Sharskus
 @dateCreated: 14/11/2017
  */
-package mineSweeper.core;
+package game.mineSweeper.core;
 
 
 public class Position implements Comparable<Position>{

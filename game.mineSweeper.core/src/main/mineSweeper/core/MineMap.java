@@ -1,7 +1,9 @@
 package mineSweeper.core;
 
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Predicate;
+import java.util.stream.Stream;
 
 import static java.util.stream.Collectors.toList;
 
@@ -9,18 +11,19 @@ public class MineMap {
 
     public final int MINES;
     private int minesLeft;
-    private final Set<MineMapPosition> map; // TODO: convert to the Map<Position, ... >
+    private final Map<Position, PosValue> map; // TODO: convert to the Map<Position, ... >
+    static int size_X, size_Y;
 
-//    public final static Predicate<MineMapPosition> isMine = p -> p.getValue() == MineMapPosition.MINE;
-    public final static Predicate<MineMapPosition> isMine = MineMapPosition::isMine; // kinda stupid way
-    public final static Predicate<MineMapPosition> isNumber = p -> 0 <= p.getValue() && p.getValue() < 10;
+//    public final static Predicate<PosValue> isMine = p -> p.getValue() == PosValue.MINE;
+    public final static Predicate<PosValue> isMine = PosValue::isMine; // kinda stupid way
+    public final static Predicate<PosValue> isNumber = p -> 0 <= p.getValue() && p.getValue() < 10;
 
     public MineMap( String map) {
         this.map = createMap(map);
         this.MINES = countMines(this.map);
         minesLeft = MINES;
+        setLimits(map);
     }
-
 
 
     public int getMinesLeft() {
@@ -28,7 +31,7 @@ public class MineMap {
     }
 
     int get(Position position){
-        return map.
+        return map.get(position).getValue();
     }
 
     public MineMap markMine(Position position){
@@ -38,14 +41,25 @@ public class MineMap {
 
     @Override
     public String toString() {
+        int[][] intMap = new int[size_X][size_Y];
+
+        map.values().parallelStream()
+                // TODO: In functional code don't use external values!!
+                .forEach( it-> intMap[it.X][it.Y] = it.getValue() );
+
+
+        return toString(intMap);
+    }
+
+    public String setToString(Set<PosValue> map) { // Set to string
         // TODO: make it more Java8'ish(if possible)
         String s = "";
         StringJoiner sj = new StringJoiner(" ");
-        List<MineMapPosition> list = this.map.stream().sorted().collect(toList());
-        LinkedList<MineMapPosition> sortedList = new LinkedList<>(list);
+        List<PosValue> list = map.stream().sorted().collect(toList());
+        LinkedList<PosValue> sortedList = new LinkedList<>(list);
 
         int prevX = 0;
-        for(MineMapPosition p : sortedList){
+        for(PosValue p : sortedList){
 
             if( prevX < p.X ){
                 s += sj.toString() + "\n";
@@ -60,6 +74,20 @@ public class MineMap {
         return s += sj.toString().trim(); //TODO: make better
     }
 
+    private String toString(int[][] map){
+        String s = "";
+        StringJoiner sj = new StringJoiner(" ");
+        for(int[] cha : map){
+            for(int ch : cha){
+                if( ch > 10 ){ sj.add((char)ch +""); }
+                else{ sj.add(ch +""); }
+            }
+            s += sj.toString() + "\n";
+            sj = new StringJoiner(" ");
+        }
+        return s.trim();
+    }
+
     /********************************************************/
     // Private methods
     /**
@@ -68,9 +96,10 @@ public class MineMap {
      * @param data String representtion of the map
      * @return created map
      */
-    private static Set<MineMapPosition> createMap(String data) {
+    private static Map<Position, PosValue> createMap(String data) {
         // TODO: make it more Java8'ish(if possible)
-        Set<MineMapPosition> map = new HashSet<>();
+        // https://stackoverflow.com/questions/2836267/concurrenthashmap-in-java
+        Map<Position, PosValue> map = new ConcurrentHashMap<>();
         String[] lines = data.split( "\n");
 
         for(int i = 0; i < lines.length; i++){
@@ -81,10 +110,10 @@ public class MineMap {
 
                 if( '0' <= ch && ch <= '9' ){ // if valid number
                     int n = square[j].charAt(0) - '0'; // convert char to number ( '5'(char) to 5(int) )
-                    map.add(new MineMapPosition(i, j, n));
+                    map.put(Position.of(i, j), PosValue.of(i, j, n));
                 }else{
                     int n = square[j].charAt(0); // store character as it representative ascii number
-                    map.add(new MineMapPosition(i, j, n));
+                    map.put(Position.of(i, j), PosValue.of(i, j, n));
                 }
 
             }
@@ -98,17 +127,22 @@ public class MineMap {
      * @param map were mines will be checked
      * @return number of mines in a given map
      */
-    private static int countMines(Set<MineMapPosition> map){
-        return (int)map.stream()
+    private static int countMines(Map<Position, PosValue> map){
+        return (int)map.values().stream()
                 // same thing in 7 ways
-                .filter(it -> it.getValue() == MineMapPosition.MINE)    // use method as instance of MinMapPosition class
+                .filter(it -> it.getValue() == PosValue.MINE)    // use method as instance of MinMapPosition class
                 .filter(it -> it.getValue() == it.MINE)                 // use method as instance of MinMapPosition class
-                .filter(it -> MineMapPosition.isMine(it))               // use static method in MinMapPosition class (must be static)
+                .filter(it -> PosValue.isMine(it))               // use static method in MinMapPosition class (must be static)
                 .filter(it -> it.isMine(it))        // use method as instance of MinMapPosition class
-                .filter(MineMapPosition::isMine)    // use static method in MinMapPosition class (must be static)
-                .filter(MineMapPosition.isMine)     // use Predicate in MinMapPosition class
+                .filter(PosValue::isMine)    // use static method in MinMapPosition class (must be static)
+                .filter(PosValue.isMine)     // use Predicate in MinMapPosition class
                 .filter(isMine)                     // use Predicate in MineMap (this) class.
                 .count();
     }
 
+    private void setLimits(String map) {
+        String[] rows= map.split("\n");
+        this.size_X = rows.length;
+        this.size_Y = rows[0].split(" ").length;
+    }
 }

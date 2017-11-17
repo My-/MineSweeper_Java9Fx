@@ -1,7 +1,5 @@
-package mineSweeper.controls;
+package mineSweeper.core;
 
-
-import mineSweeper.core.Position;
 
 import java.util.*;
 import java.util.stream.Stream;

@@ -1,13 +1,11 @@
-package mineSweeper.controls;
+package mineSweeper.core;
 
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 import mineSweeper.core.*;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 class NearByPositionsTest {
@@ -41,7 +39,7 @@ class NearByPositionsTest {
     void stream() {
         Position pos = new Position(0,0);
         NearByPositions testIt = NearByPositions.of(pos);
-
+        // TODO: make normal test!
         testIt.stream().sorted().forEachOrdered(System.out::println);
     }
 

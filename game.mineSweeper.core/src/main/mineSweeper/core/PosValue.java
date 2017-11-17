@@ -35,7 +35,7 @@ public class PosValue extends Position {
     }
 
     private void setValue(int value) throws IllegalArgumentException {
-        if( 0 < value && value < 9 || value == MINE || value == POSSIBLY_MINE || value == UNKNOWN ){
+        if( 0 <= value && value < 9 || value == MINE || value == POSSIBLY_MINE || value == UNKNOWN ){
             this.value = value;
         }else{
             throw new IllegalArgumentException("Illegal value: "+ value +"("+ (char)value +")");

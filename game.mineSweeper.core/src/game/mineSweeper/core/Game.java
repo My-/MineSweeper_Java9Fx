@@ -53,7 +53,7 @@ public class Game {
         return this;
     }
     public static char toSymbol(int value){
-        return (char)(0 > value || value > 9 ? value : value +'0');
+        return (char)(0 > value || value > 9 ? value +'0': value);
     }
 
     /** Functions **/

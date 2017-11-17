@@ -7,32 +7,46 @@ import java.util.function.Predicate;
 import static java.util.stream.Collectors.toList;
 
 public class MineMap {
-
+    /** Fields **/
     public final int MINES;
-
-    final Map<Position, PosValue> map; // TODO: convert to the Map<Position, ... >
     static int size_X, size_Y;
+    private final Map<Position, PosValue> map;
 
-
-
-    /************************************************************/
-    // Object creation
-    public MineMap( String map) {
-        this.map = createMap(map);
-        this.MINES = countMines(this.map);
-        ;
-        setLimits(map);
+    /** Constructors **/
+    public MineMap(String mapData) {
+        this.map = createMap(mapData);
+        this.MINES = countMines(this.map);;
+        setLimits(mapData);
     }
 
-    /************************************************************/
+    /** Factory **/
+    public static MineMap of(String mapData){
+        return new MineMap(mapData);
+    }
 
+    /** Functions **/
 
-
-    int getValue(Position position){
+    /** Methods: Getters **/
+    int getValueAsInt(Position position){
         return map.get(position).getValue();
     }
+    PosValue getValue(Position position){
+        return map.get(position);
+    }
 
+    Map<Position, PosValue> getMap(){
+        return this.map;
+    }
 
+    /** Methods: Setters **/
+    void set(PosValue posValue){
+        // TODO: make it more readable.
+        map.get(Position.of(posValue.X, posValue.Y)).setValue(posValue.getValue());
+    }
+    void set(Position position, int value){
+        // TODO: make it more readable.
+        map.get(position).setValue(value);
+    }
 
     @Override
     public String toString() {
@@ -44,29 +58,6 @@ public class MineMap {
 
 
         return toString(intMap);
-    }
-
-    public String setToString(Set<PosValue> map) { // Set to string
-        // TODO: make it more Java8'ish(if possible)
-        String s = "";
-        StringJoiner sj = new StringJoiner(" ");
-        List<PosValue> list = map.stream().sorted().collect(toList());
-        LinkedList<PosValue> sortedList = new LinkedList<>(list);
-
-        int prevX = 0;
-        for(PosValue p : sortedList){
-
-            if( prevX < p.X ){
-                s += sj.toString() + "\n";
-                sj = new StringJoiner(" ");
-                prevX = p.X;
-            }
-
-            if( p.getValue() > 10 ){ sj.add((char)p.getValue() +""); }
-            else{ sj.add(p.getValue()+""); }
-        }
-
-        return s += sj.toString().trim(); //TODO: make better
     }
 
     private String toString(int[][] map){
@@ -118,6 +109,7 @@ public class MineMap {
 
     /**
      * Counts mines in a given map.
+     * In the method here is overloaded Stream.filter() to demonstrate how it cold be done.
      *
      * @param map were mines will be checked
      * @return number of mines in a given map
@@ -128,12 +120,12 @@ public class MineMap {
         return (int)map.values().stream()
                 // same thing in 7 ways
                 .filter(it -> it.getValue() == PosValue.MINE)    // use method as instance of MinMapPosition class
-                .filter(it -> it.getValue() == it.MINE)                 // use method as instance of MinMapPosition class
+                .filter(it -> it.getValue() == it.MINE)          // use method as instance of MinMapPosition class
                 .filter(it -> PosValue.isMine(it))               // use static method in MinMapPosition class (must be static)
                 .filter(it -> it.isMine(it))        // use method as instance of MinMapPosition class
                 .filter(PosValue::isMine)    // use static method in MinMapPosition class (must be static)
                 .filter(PosValue.isMine)     // use Predicate in MinMapPosition class
-                .filter(isMine)                     // use Predicate in MineMap (this) class.
+                .filter(isMine)              // use local Predicate.
                 .count();
     }
 

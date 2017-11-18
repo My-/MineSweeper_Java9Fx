@@ -26,7 +26,7 @@ public class GameUI extends Application {
 //        root.getChildren().add(C.getGrid());
 
 
-        primaryStage.setScene(new Scene(root, 500, 500));
+        primaryStage.setScene(new Scene(root));
         primaryStage.show();
     }
 }

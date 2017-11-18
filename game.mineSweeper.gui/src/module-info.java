@@ -3,5 +3,7 @@ module game.mineSweeper.gui {
     requires javafx.fxml;
     requires javafx.controls;
 
+    requires game.mineSweeper.core;
+
     exports game.mineSweeper.gui;
 }

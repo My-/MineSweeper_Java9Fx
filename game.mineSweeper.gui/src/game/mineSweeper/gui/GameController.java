@@ -6,8 +6,11 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseButton;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.RowConstraints;
 
 import java.io.File;
 import java.net.URL;
@@ -42,22 +45,52 @@ public class GameController implements Initializable{
             }
         }
 
+
+
     }
 
     public static void createButtonGrid(GridPane grid, int X, int Y){
+        // https://stackoverflow.com/a/35345799
+        for (int rowIndex = 0; rowIndex < grid.getRowCount(); rowIndex++) {
+            RowConstraints rc = new RowConstraints();
+            rc.setVgrow(Priority.ALWAYS) ; // allow row to grow
+            rc.setFillHeight(true); // ask nodes to fill height for row
+            // other settings as needed...
+            grid.getRowConstraints().add(rc);
+        }
+        for (int colIndex = 0; colIndex < grid.getColumnCount(); colIndex++) {
+            ColumnConstraints cc = new ColumnConstraints();
+            cc.setHgrow(Priority.ALWAYS) ; // allow column to grow
+            cc.setFillWidth(true); // ask nodes to fill space for column
+            // other settings as needed...
+            grid.getColumnConstraints().add(cc);
+        }
 
         for(int x = 0; x < X; x++){
             for(int y = 0; y < Y; y++){
                 Button button;
 //                button = new Button(""+ x +", "+ y);
 //                button = new Button(""+ (int)(Math.random() *10));
-                button = new Button("");
+                button = new Button(""+ (int)(Math.random() *10));
                 // https://stackoverflow.com/a/23230943
                 button.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
 //                button.setPrefSize(50,50);
-                // TODO: add event
-                button.setOnAction(e-> button.setText(""+ (int)(Math.random() *10)));
-                button.autosize();
+
+//                button.setOnAction(e-> button.setText(""+ (int)(Math.random() *10)));
+
+                button.setOnMouseClicked(e-> {
+                    if( e.isControlDown() && e.getButton().equals(MouseButton.SECONDARY)){
+                        System.out.println("Ctrl + R-mouse");
+                    }else if( e.getButton().equals(MouseButton.SECONDARY) ){
+                        System.out.println("R-mouse");
+//                        button.
+                    }else{
+                        System.out.println("else");
+                    }
+                });
+//                button.autosize();
+//                GridPane.setFillWidth(button, true);
+//                GridPane.setFillHeight(button, true);
                 grid.add(button , x, y);
 
 

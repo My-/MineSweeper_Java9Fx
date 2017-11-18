@@ -38,7 +38,7 @@ public class Game {
         return minesLeft;
     }
     public Game markMine(Position position){
-        userMap.set(mineMap.getValue(position));
+        userMap.set(position, PosValue.MINE);
         minesLeft--;
         return this;
     }
@@ -49,6 +49,8 @@ public class Game {
 
             userMap.getValue(position)
                     .setValue(PosValue.UNKNOWN);
+        }else {
+            System.out.println("Game.removeMark(Position):Game\n\tCan't remove mark from number!!");
         }
         return this;
     }

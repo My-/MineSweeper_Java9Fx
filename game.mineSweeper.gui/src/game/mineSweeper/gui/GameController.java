@@ -1,5 +1,6 @@
 package game.mineSweeper.gui;
 
+import game.mineSweeper.core.Position;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -17,8 +18,12 @@ import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 
+import game.mineSweeper.core.Game;
+
 public class GameController implements Initializable{
     public GridPane grid;
+
+    private Game game;
 
     public GridPane getGrid() {
         return grid;
@@ -45,11 +50,11 @@ public class GameController implements Initializable{
             }
         }
 
-
-
     }
 
-    public static void createButtonGrid(GridPane grid, int X, int Y){
+
+
+    public void createButtonGrid(GridPane grid, int X, int Y){
         // https://stackoverflow.com/a/35345799
         for (int rowIndex = 0; rowIndex < grid.getRowCount(); rowIndex++) {
             RowConstraints rc = new RowConstraints();
@@ -68,10 +73,11 @@ public class GameController implements Initializable{
 
         for(int x = 0; x < X; x++){
             for(int y = 0; y < Y; y++){
+                Position position = new Position(x,y);
                 Button button;
 //                button = new Button(""+ x +", "+ y);
-//                button = new Button(""+ (int)(Math.random() *10));
-                button = new Button(""+ (int)(Math.random() *10));
+//                button = new Button(""+ (int)(Math.random() *10)); // ad random number to button text
+                button = new Button(""+ game.getValue(position));
                 // https://stackoverflow.com/a/23230943
                 button.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
 //                button.setPrefSize(50,50);
@@ -83,14 +89,15 @@ public class GameController implements Initializable{
                         System.out.println("Ctrl + R-mouse");
                     }else if( e.getButton().equals(MouseButton.SECONDARY) ){
                         System.out.println("R-mouse");
-//                        button.
+                        button.setText(""+ game.markMine(position).getValue(position));
                     }else{
                         System.out.println("else");
+                        openCell((Button)e.getSource());
                     }
                 });
 //                button.autosize();
-//                GridPane.setFillWidth(button, true);
-//                GridPane.setFillHeight(button, true);
+                GridPane.setFillWidth(button, true);
+                GridPane.setFillHeight(button, true);
                 grid.add(button , x, y);
 
 
@@ -99,10 +106,26 @@ public class GameController implements Initializable{
 
     }
 
+    private  void openCell(Button button) {
+        int x = GridPane.getRowIndex(button);
+        int y = GridPane.getColumnIndex(button);
+        System.out.println(x +","+ y);
+        Position pos = Position.of(x, y);
+
+        button.setText(""+ game.open(pos));
+
+    }
 
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        createGrid(10,10);
+//        createGrid(10,10);
+        createGameMap();
+    }
+
+    private void createGameMap() {
+        game = Game.create(0);
+        createGrid(game.sizeX(), game.sizeY());
+
     }
 }

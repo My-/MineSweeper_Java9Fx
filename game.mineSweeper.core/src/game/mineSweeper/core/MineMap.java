@@ -15,7 +15,7 @@ public class MineMap {
     /** Constructors **/
     public MineMap(String mapData) {
         this.map = createMap(mapData);
-        this.MINES = countMines(this.map);;
+        this.MINES = countMines();;
         setLimits(mapData);
     }
 
@@ -114,7 +114,7 @@ public class MineMap {
      * @param map were mines will be checked
      * @return number of mines in a given map
      */
-    private static int countMines(Map<Position, PosValue> map){
+    int countMines(){
         Predicate<PosValue> isMine = PosValue::isMine;
 
         return (int)map.values().stream()

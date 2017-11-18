@@ -32,10 +32,15 @@ class GameTest {
     }
 
     @Test
-    @DisplayName("Testing: get(Position):char")
+    @DisplayName("Testing: getValue(Position):char")
     void getValue_Test(){
         game = new Game(Data.MAP[n]);
-        // TODO:
+        Random random = new Random();
+
+        Position pos = Position.of(1, 1);
+
+        char ch = game.getValue(pos);
+        assertEquals('?', ch, "\""+ pos +" != "+ ch +" ("+ (int)ch +")\"");
 
     }
 

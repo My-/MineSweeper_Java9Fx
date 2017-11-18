@@ -8,10 +8,7 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
-import javafx.scene.layout.ColumnConstraints;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.RowConstraints;
+import javafx.scene.layout.*;
 
 import java.io.File;
 import java.net.URL;
@@ -22,6 +19,8 @@ import game.mineSweeper.core.Game;
 
 public class GameController implements Initializable{
     public GridPane grid;
+    public AnchorPane mapArea;
+
 
     private Game game;
 
@@ -112,8 +111,18 @@ public class GameController implements Initializable{
         System.out.println(x +","+ y);
         Position pos = Position.of(x, y);
 
-        button.setText(""+ game.open(pos));
+        try {
+            button.setText("" + game.open(pos));
+        }catch (Exception ex){
+            System.err.println("GAME OVER");
+            gameOver(pos);
+        }
 
+    }
+
+    private void gameOver(Position pos) {
+        //TODO: add game over screen
+        mapArea.getChildren().remove(grid);
     }
 
 
@@ -123,7 +132,13 @@ public class GameController implements Initializable{
         createGameMap();
     }
 
-    private void createGameMap() {
+    public void newGame(){
+        game = Game.create(0);
+        mapArea.getChildren().add(grid);
+        createGrid(game.sizeX(), game.sizeY());
+    }
+
+    public void createGameMap() {
         game = Game.create(0);
         createGrid(game.sizeX(), game.sizeY());
 

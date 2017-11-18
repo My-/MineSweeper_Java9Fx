@@ -13,6 +13,7 @@ public class Game {
         mineMap = new MineMap(data[1]);
         userMap = new MineMap(data[2]);
         // TODO: map validation
+        minesLeft = mineMap.MINES;
     }
 
     /** Factory **/
@@ -58,9 +59,16 @@ public class Game {
         return (char)(0 > value || value > 9 ? value +'0': value);
     }
 
+    public int sizeX(){
+        return userMap.size_X;
+    }
+    public int sizeY(){
+        return userMap.size_Y;
+    }
+
     /** Functions **/
-    public final static Predicate<Position> inLimits_X = p -> 0 <= p.X && p.X < MineMap.size_X;
-    public final static Predicate<Position> inLimits_Y = p -> 0 <= p.Y && p.Y < MineMap.size_Y;
+    public final static Predicate<Position> inLimits_X = pos-> 0 <= pos.X && pos.X < MineMap.size_X; // wrong
+    public final static Predicate<Position> inLimits_Y = p -> 0 <= p.Y && p.Y < MineMap.size_Y; // wrong
     public final static Predicate<Position> inLimits = inLimits_X.and(inLimits_Y); // two predicates combine
     //    public final static Predicate<PosValue> isMine = p -> p.getValue() == PosValue.MINE;
     public final static Predicate<PosValue> isMine = PosValue::isMine;

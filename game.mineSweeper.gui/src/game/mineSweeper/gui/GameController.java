@@ -73,7 +73,7 @@ public class GameController implements Initializable{
 
         for(int x = 0; x < X; x++){
             for(int y = 0; y < Y; y++){
-                Position position = new Position(x,y);
+                Position position = new Position(y,x);
                 Button button;
 //                button = new Button(""+ x +", "+ y);
 //                button = new Button(""+ (int)(Math.random() *10)); // ad random number to button text

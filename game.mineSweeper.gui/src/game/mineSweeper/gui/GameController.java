@@ -1,10 +1,11 @@
 package game.mineSweeper.gui;
 
 import game.mineSweeper.core.Position;
-import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.Menu;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
@@ -12,7 +13,6 @@ import javafx.scene.layout.*;
 
 import java.io.File;
 import java.net.URL;
-import java.util.List;
 import java.util.ResourceBundle;
 
 import game.mineSweeper.core.Game;
@@ -21,6 +21,9 @@ public class GameController implements Initializable{
     public GridPane grid;
     public AnchorPane mapArea;
 
+    public Menu minesLeftMenu;
+    public Label minesLeft;
+    public Label minesTotal;
 
     private Game game;
 
@@ -73,10 +76,14 @@ public class GameController implements Initializable{
         for(int x = 0; x < X; x++){
             for(int y = 0; y < Y; y++){
                 Position position = new Position(y,x);
+
+
                 Button button;
 //                button = new Button(""+ x +", "+ y);
 //                button = new Button(""+ (int)(Math.random() *10)); // ad random number to button text
-                button = new Button(""+ game.getValue(position));
+
+                String buttonText = ""+ game.getValue(position);
+                button = new Button(""+ buttonText);
                 // https://stackoverflow.com/a/23230943
                 button.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
 //                button.setPrefSize(50,50);
@@ -85,15 +92,24 @@ public class GameController implements Initializable{
 
                 button.setOnMouseClicked(e-> {
                     if( e.isControlDown() && e.getButton().equals(MouseButton.SECONDARY)){
-                        System.out.println("Ctrl + R-mouse");
+//                        System.out.println("Ctrl + R-mouse");
                     }else if( e.getButton().equals(MouseButton.SECONDARY) ){
-                        System.out.println("R-mouse");
-                        button.setText(""+ game.markMine(position).getValue(position));
+//                        System.out.println("R-mouse");
+                        markAsMine((Button) e.getSource());
                     }else{
-                        System.out.println("else");
-                        openCell((Button)e.getSource());
+//                        System.out.println("else");
+                        openCell((Button) e.getSource());
                     }
                 });
+
+                button.setOnMouseMoved(e->{
+                    ((Button)e.getSource()).setStyle("-fx-text-fill: rgba(0,0,0,0.29);");
+                });
+
+                button.setOnMouseExited(e->{
+                    ((Button)e.getSource()).setStyle("-fx-text-fill: rgb(0,0,0);");
+                });
+
 //                button.autosize();
                 GridPane.setFillWidth(button, true);
                 GridPane.setFillHeight(button, true);
@@ -103,9 +119,50 @@ public class GameController implements Initializable{
             }
         }
 
+
     }
 
+    private void markAsMine(Button button) {
+        int x = GridPane.getRowIndex(button);
+        int y = GridPane.getColumnIndex(button);
+        Position pos = Position.of(x, y);
+
+
+
+        String cssClass = "button-mine";
+
+        if( button.getStyleClass().contains(cssClass) ){ // is marked as mine??
+            game.removeMark(pos);
+            button.getStyleClass().remove(cssClass);
+        }else{
+            game.markMine(pos);
+            button.getStyleClass().add(cssClass);
+        }
+
+        button.setText("" + game.getValue(pos));
+        updateMineDisplay();
+
+//        button.getStyleClass().stream().forEachOrdered(System.out::println); // prints all style classes on this element
+//        button.setStyle("-fx-background-color: darkorange;");
+    }
+
+    private void updateMineDisplay() {
+        String total = ""+ game.getMinesTotal();
+        String left = ""+ game.getMinesLeft();
+        minesLeft.setText(left);
+        minesTotal.setText(total);
+        minesLeftMenu.setText(left +"/"+ total);
+    }
+
+
+
     private  void openCell(Button button) {
+        if( button.getStyleClass().contains("button-mine") ){ // is marked as mine??
+            return; // don't open marked mines
+        }
+
+        String cssClass = "button-open";
+
         int x = GridPane.getRowIndex(button);
         int y = GridPane.getColumnIndex(button);
         System.out.println(x +","+ y);
@@ -115,15 +172,26 @@ public class GameController implements Initializable{
             button.setText("" + game.open(pos));
         }catch (Exception ex){
             System.err.println("GAME OVER");
-            gameOver(pos);
+            gameOver(button);
+            return;
         }
 
+        if( !button.getStyleClass().contains(cssClass) ){ // DONE: make it add only once.
+            button.getStyleClass().add(cssClass);
+        }
     }
 
-    private void gameOver(Position pos) {
-        //TODO: add game over screen
-        mapArea.getChildren().remove(grid);
+    private void gameOver(Button button) {
+        //TODO: add game over  on screen
+//        mapArea.getChildren().remove(grid);
+        String cssClass = "game-over";
+
+        button.getStyleClass().add(cssClass);
+
+        minesLeftMenu.setText("Game Over");
+//        minesLeftMenu.setStyle("-fx-background-color: #de1237;");
     }
+
 
 
     @Override
@@ -133,14 +201,14 @@ public class GameController implements Initializable{
     }
 
     public void newGame(){
-        game = Game.create(0);
-        mapArea.getChildren().add(grid);
-        createGrid(game.sizeX(), game.sizeY());
+        grid.getChildren().clear();
+        createGameMap();
     }
 
     public void createGameMap() {
         game = Game.create(0);
         createGrid(game.sizeX(), game.sizeY());
+        updateMineDisplay();
 
     }
 }

@@ -1,0 +1,27 @@
+.gridPane {
+   -fx-background-color: azure;
+}
+
+.button {
+    -fx-text-fill: black;
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+    -fx-background-color: #dede39;
+    -fx-background-radius: 0;
+    -fx-font-family: monospace;
+}
+
+
+.button-mine {
+    -fx-background-color: darkorange;
+}
+.button-open {
+    -fx-background-color: #aade82
+}
+.game-over {
+    -fx-background-color: #de1237;
+}
+
+/*#pane {*/
+    /*-fx-background-color: #de16c4*/
+/*}*/

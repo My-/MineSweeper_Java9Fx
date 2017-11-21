@@ -1,11 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.ProgressBar?>
 <?import javafx.scene.control.SeparatorMenuItem?>
+<?import javafx.scene.effect.Glow?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 
 <VBox fx:id="root" xmlns="http://javafx.com/javafx/9" xmlns:fx="http://javafx.com/fxml/1" fx:controller="game.mineSweeper.gui.GameController">
@@ -14,14 +20,11 @@
             <menus>
                 <Menu mnemonicParsing="false" text="File">
                     <items>
-                        <MenuItem mnemonicParsing="false" text="New" onAction="#newGame"/>
+                        <MenuItem mnemonicParsing="false" onAction="#newGame" text="New" />
                         <MenuItem mnemonicParsing="false" text="Open…" />
-                        <Menu mnemonicParsing="false" text="Open Recent" />
                         <SeparatorMenuItem mnemonicParsing="false" />
-                        <MenuItem mnemonicParsing="false" text="Close" />
                         <MenuItem mnemonicParsing="false" text="Save" />
                         <MenuItem mnemonicParsing="false" text="Save As…" />
-                        <MenuItem mnemonicParsing="false" text="Revert" />
                         <SeparatorMenuItem mnemonicParsing="false" />
                         <MenuItem mnemonicParsing="false" text="Preferences…" />
                         <SeparatorMenuItem mnemonicParsing="false" />
@@ -30,22 +33,55 @@
                 </Menu>
                 <Menu mnemonicParsing="false" text="Help">
                     <items>
-                        <MenuItem mnemonicParsing="false" text="About MyHelloApp" />
+                  <MenuItem mnemonicParsing="false" text="Controls" />
+                        <MenuItem mnemonicParsing="false" text="About Mine Sweeper" />
                     </items>
                 </Menu>
+            <Menu fx:id="minesLeftMenu" mnemonicParsing="false" text="x/y" />
             </menus>
         </MenuBar>
         <AnchorPane fx:id="mapArea" VBox.vgrow="ALWAYS">
             <children>
-                <GridPane fx:id="grid" layoutY="6.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                    <!--<rowConstraints>-->
-                    <!--<RowConstraints  />-->
-                    <!--</rowConstraints>-->
-                    <!--<columnConstraints>-->
-                    <!--<ColumnConstraints  />-->
-                    <!--</columnConstraints>-->
-                </GridPane>
+            <Pane id="pane" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <children>
+                      <GridPane fx:id="grid" gridLinesVisible="true">
+                     <opaqueInsets>
+                        <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+                     </opaqueInsets>
+                     <effect>
+                        <Glow />
+                     </effect>
+                  </GridPane>
+               </children>
+            </Pane>
+
             </children>
         </AnchorPane>
+      <HBox alignment="BOTTOM_CENTER" prefHeight="0.0" VBox.vgrow="NEVER">
+         <children>
+            <Label fx:id="minesLeft" alignment="CENTER" text="~" textAlignment="CENTER" HBox.hgrow="NEVER">
+               <padding>
+                  <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+               </padding>
+            </Label>
+            <AnchorPane prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
+               <children>
+                    <ProgressBar fx:id="mineProgress" prefHeight="24.0" prefWidth="290.0" progress="0.34" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                     <padding>
+                        <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+                     </padding>
+                     <effect>
+                        <Glow />
+                     </effect>
+                  </ProgressBar>
+               </children>
+            </AnchorPane>
+            <Label fx:id="minesTotal" alignment="CENTER" text="~" HBox.hgrow="NEVER">
+               <padding>
+                  <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+               </padding>
+            </Label>
+         </children>
+      </HBox>
     </children>
 </VBox>

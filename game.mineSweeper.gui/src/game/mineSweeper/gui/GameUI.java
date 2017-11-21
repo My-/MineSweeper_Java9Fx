@@ -24,9 +24,9 @@ public class GameUI extends Application {
 //        C.createGrid( 10, 10);
 //
 //        root.getChildren().add(C.getGrid());
-
-
-        primaryStage.setScene(new Scene(root));
+        Scene scene = new Scene(root);
+        scene.getStylesheets().add( getClass().getResource("mineSweeperGame.css").toExternalForm() );// <--- add style css file
+        primaryStage.setScene(scene);
         primaryStage.show();
     }
 }

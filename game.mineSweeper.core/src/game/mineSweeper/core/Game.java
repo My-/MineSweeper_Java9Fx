@@ -1,15 +1,20 @@
 package game.mineSweeper.core;
 
+import java.util.Iterator;
+import java.util.Spliterator;
+import java.util.Spliterators;
 import java.util.function.Predicate;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
-public class Game {
+public class Game implements Iterable<PosValue>{
     /** Fields **/
     private MineMap userMap;
     private MineMap mineMap;
     private int minesLeft;
 
     /** Constructors **/
-    public Game(String[] data) {
+    Game(String[] data) {
         mineMap = new MineMap(data[1]);
         userMap = new MineMap(data[2]);
         // TODO: map validation
@@ -34,6 +39,12 @@ public class Game {
     public char getValue(Position position){
         int n = userMap.getValueAsInt(position);
         return toSymbol(n);
+    }
+    public PosValue getPosValue(Position position){
+        return userMap.getValue(position);
+    }
+    public int getMinesTotal(){
+        return mineMap.MINES;
     }
     public int getMinesLeft() {
         return minesLeft;
@@ -77,4 +88,18 @@ public class Game {
     public final static Predicate<PosValue> isClose = isUnknown;
     // https://stackoverflow.com/questions/21488056/how-to-negate-a-method-reference-predicate
     public final static Predicate<PosValue> isOpen = isClose.negate();
+
+    @Override
+    public Iterator<PosValue> iterator() {
+        return userMap.iterator();
+    }
+
+    @Override
+    public Spliterator<PosValue> spliterator() {
+        return Spliterators.spliteratorUnknownSize(this.iterator(), Spliterator.CONCURRENT);
+    }
+
+    public Stream<PosValue> stream() {
+        return StreamSupport.stream(this.spliterator(), true);
+    }
 }

@@ -6,14 +6,14 @@ import java.util.function.Predicate;
 
 import static java.util.stream.Collectors.toList;
 
-public class MineMap {
+public class MineMap implements Iterable<PosValue>{
     /** Fields **/
     public final int MINES;
     static int size_X, size_Y;
     private final Map<Position, PosValue> map;
 
     /** Constructors **/
-    public MineMap(String mapData) {
+    MineMap(String mapData) {
         this.map = createMap(mapData);
         this.MINES = countMines();;
         setLimits(mapData);
@@ -111,7 +111,6 @@ public class MineMap {
      * Counts mines in a given map.
      * In the method here is overloaded Stream.filter() to demonstrate how it cold be done.
      *
-     * @param map were mines will be checked
      * @return number of mines in a given map
      */
     int countMines(){
@@ -133,5 +132,10 @@ public class MineMap {
         String[] rows= map.split("\n");
         this.size_X = rows.length;
         this.size_Y = rows[0].split(" ").length;
+    }
+
+    @Override
+    public Iterator<PosValue> iterator() {
+        return map.values().iterator();
     }
 }

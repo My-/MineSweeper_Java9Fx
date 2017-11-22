@@ -1,8 +1,10 @@
 package game.mineSweeper.gui;
 
+import game.mineSweeper.core.PosValue;
 import game.mineSweeper.core.Position;
 import javafx.event.Event;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
@@ -14,6 +16,9 @@ import javafx.scene.layout.*;
 import java.io.File;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.function.Consumer;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import game.mineSweeper.core.Game;
 
@@ -73,61 +78,100 @@ public class GameController implements Initializable{
             grid.getColumnConstraints().add(cc);
         }
 
-        for(int x = 0; x < X; x++){
-            for(int y = 0; y < Y; y++){
-                Position position = new Position(y,x);
+        // TODO: function is to long. convert to method
+        Function<PosValue, Button> createButton = it->{
+            char value = game.getValue(it);
+            Button button = new Button(""+ value);
+            if( '0' <= value && value <= '9' ){ button.getStyleClass().add("button-open"); }
+            GridPane.setConstraints(button, it.Y, it.X);
+            return button;
+        };
 
+        Function<Button, Button> mouseClicked = it->{
+            it.setOnMouseClicked(e->{
+                if( e.getButton().equals(MouseButton.SECONDARY) ){ markAsMine((Button) e.getSource()); }
+                else{ openCell((Button) e.getSource()); }
+            });
+            return it;
+        };
 
-                Button button;
-//                button = new Button(""+ x +", "+ y);
-//                button = new Button(""+ (int)(Math.random() *10)); // ad random number to button text
+        Function<Button, Button> mouseOn = it -> {
+            it.setOnMouseMoved(e-> ((Button)e.getSource()).setStyle("-fx-text-fill: rgba(0,0,0,0.29);") );
+            return it;
+        };
 
-                String buttonText = ""+ game.getValue(position);
-                button = new Button(""+ buttonText);
-                // https://stackoverflow.com/a/23230943
-                button.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
-//                button.setPrefSize(50,50);
+        Function<Button, Button> mouseOff = it -> {
+            it.setOnMouseExited(e-> ((Button)e.getSource()).setStyle("-fx-text-fill: rgb(0,0,0);") );
+            return it;
+        };
 
-//                button.setOnAction(e-> button.setText(""+ (int)(Math.random() *10)));
+        Function<Button, Button> mouseHover = mouseOn.andThen(mouseOff);  //Same as: it-> mouseOff.apply( mouseOn.apply(it) );
+;
 
-                button.setOnMouseClicked(e-> {
-                    if( e.isControlDown() && e.getButton().equals(MouseButton.SECONDARY)){
-//                        System.out.println("Ctrl + R-mouse");
-                    }else if( e.getButton().equals(MouseButton.SECONDARY) ){
-//                        System.out.println("R-mouse");
-                        markAsMine((Button) e.getSource());
-                    }else{
-//                        System.out.println("else");
-                        openCell((Button) e.getSource());
-                    }
-                });
+        // shorten version
+        grid.getChildren().addAll(
+                game.stream()
+                        .map(createButton)
+                        .map(mouseClicked)
+                        .map(mouseHover)
+                        .collect(Collectors.toList())
+        );
 
-                button.setOnMouseMoved(e->{
-                    ((Button)e.getSource()).setStyle("-fx-text-fill: rgba(0,0,0,0.29);");
-                });
-
-                button.setOnMouseExited(e->{
-                    ((Button)e.getSource()).setStyle("-fx-text-fill: rgb(0,0,0);");
-                });
-
-//                button.autosize();
-                GridPane.setFillWidth(button, true);
-                GridPane.setFillHeight(button, true);
-                grid.add(button , x, y);
-
-
-            }
-        }
+//        for(int x = 0; x < X; x++){
+//            for(int y = 0; y < Y; y++){
+//                Position position = new Position(y,x);
+//
+//
+//                Button button;
+////                button = new Button(""+ x +", "+ y);
+////                button = new Button(""+ (int)(Math.random() *10)); // ad random number to button text
+//
+//                String buttonText = ""+ game.getValue(position);
+//                button = new Button(""+ buttonText);
+//                // https://stackoverflow.com/a/23230943
+//                button.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+////                button.setPrefSize(50,50);
+//
+////                button.setOnAction(e-> button.setText(""+ (int)(Math.random() *10)));
+//
+//                button.setOnMouseClicked(e-> {
+//                    if( e.isControlDown() && e.getButton().equals(MouseButton.SECONDARY)){
+////                        System.out.println("Ctrl + R-mouse");
+//                    }else if( e.getButton().equals(MouseButton.SECONDARY) ){
+////                        System.out.println("R-mouse");
+//                        markAsMine((Button) e.getSource());
+//                    }else{
+////                        System.out.println("else");
+//                        openCell((Button) e.getSource());
+//                    }
+//                });
+//
+//                button.setOnMouseMoved(e->{
+//                    ((Button)e.getSource()).setStyle("-fx-text-fill: rgba(0,0,0,0.29);");
+//                });
+//
+//                button.setOnMouseExited(e->{
+//                    ((Button)e.getSource()).setStyle("-fx-text-fill: rgb(0,0,0);");
+//                });
+//
+////                button.autosize();
+//                GridPane.setFillWidth(button, true);
+//                GridPane.setFillHeight(button, true);
+//                grid.add(button , x, y);
+//
+//
+//            }
+//        }
 
 
     }
 
     private void markAsMine(Button button) {
+        if( button.getStyleClass().contains("button-open") ){ return; } // if cell is open don't mark as mine
+
         int x = GridPane.getRowIndex(button);
         int y = GridPane.getColumnIndex(button);
         Position pos = Position.of(x, y);
-
-
 
         String cssClass = "button-mine";
 
@@ -157,16 +201,13 @@ public class GameController implements Initializable{
 
 
     private  void openCell(Button button) {
-        if( button.getStyleClass().contains("button-mine") ){ // is marked as mine??
-            return; // don't open marked mines
-        }
-
+        if( button.getStyleClass().contains("button-mine") ){ return; } // if cell marked as mine don't open
         String cssClass = "button-open";
 
         int x = GridPane.getRowIndex(button);
         int y = GridPane.getColumnIndex(button);
-        System.out.println(x +","+ y);
         Position pos = Position.of(x, y);
+//        System.out.println("In openCell(): "+ x +","+ y); // print cell coordinates
 
         try {
             button.setText("" + game.open(pos));

@@ -83,7 +83,7 @@ public class Game implements Iterable<PosValue>{
     public final static Predicate<Position> inLimits = inLimits_X.and(inLimits_Y); // two predicates combine
     //    public final static Predicate<PosValue> isMine = p -> p.getValue() == PosValue.MINE;
     public final static Predicate<PosValue> isMine = PosValue::isMine;
-    public final static Predicate<PosValue> isNumber = p -> 0 <= p.getValue() && p.getValue() < 10;
+    public final static Predicate<PosValue> isNumber = p -> 0 <= p.getValue() && p.getValue() < 10; // TODO: move to game controller???
     public final static Predicate<PosValue> isUnknown = p -> p.getValue() == PosValue.UNKNOWN;
     public final static Predicate<PosValue> isClose = isUnknown;
     // https://stackoverflow.com/questions/21488056/how-to-negate-a-method-reference-predicate

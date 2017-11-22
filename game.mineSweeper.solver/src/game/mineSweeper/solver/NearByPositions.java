@@ -1,9 +1,11 @@
-package game.mineSweeper.core;
+package game.mineSweeper.solver;
 
 
 import java.util.*;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
+
+import game.mineSweeper.core.Position;
 
 class NearByPositions implements Iterable<Position>{
 

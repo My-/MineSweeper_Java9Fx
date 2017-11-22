@@ -1,12 +1,13 @@
-package game.mineSweeper.core;
+package game.mineSweeper.solver;
 
 
+import game.mineSweeper.core.Position;
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.HashSet;
 import java.util.Set;
+
+import static org.testng.AssertJUnit.assertEquals;
 
 class NearByPositionsTest {
     @Test

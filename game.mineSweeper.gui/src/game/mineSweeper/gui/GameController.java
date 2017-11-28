@@ -18,6 +18,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.function.UnaryOperator;
 import java.util.stream.Collectors;
 
 import game.mineSweeper.core.Game;
@@ -78,7 +79,7 @@ public class GameController implements Initializable{
             grid.getColumnConstraints().add(cc);
         }
 
-        // TODO: function is to long. convert to method
+        // TODO: function is to long. convert to static method
         Function<PosValue, Button> createButton = it->{
             char value = game.getValue(it);
             Button button = new Button(""+ value);
@@ -87,6 +88,7 @@ public class GameController implements Initializable{
             return button;
         };
 
+        // TODO: function is to long. convert to static method
         Function<Button, Button> mouseClicked = it->{
             it.setOnMouseClicked(e->{
                 if( e.getButton().equals(MouseButton.SECONDARY) ){ markAsMine((Button) e.getSource()); }
@@ -100,13 +102,18 @@ public class GameController implements Initializable{
             return it;
         };
 
-        Function<Button, Button> mouseOff = it -> {
+//        Function<Button, Button> mouseOff = it -> {
+//            it.setOnMouseExited(e-> ((Button)e.getSource()).setStyle("-fx-text-fill: rgb(0,0,0);") );
+//            return it;
+//        };
+
+        // Slightly shorter/cleaner version (like above)
+        UnaryOperator<Button> mouseOff = it -> {
             it.setOnMouseExited(e-> ((Button)e.getSource()).setStyle("-fx-text-fill: rgb(0,0,0);") );
             return it;
         };
 
         Function<Button, Button> mouseHover = mouseOn.andThen(mouseOff);  //Same as: it-> mouseOff.apply( mouseOn.apply(it) );
-;
 
         // shorten version
         grid.getChildren().addAll(
@@ -116,6 +123,8 @@ public class GameController implements Initializable{
                         .map(mouseHover)
                         .collect(Collectors.toList())
         );
+
+        // All this commented (below) code logic is same as code block above (7 lines)
 
 //        for(int x = 0; x < X; x++){
 //            for(int y = 0; y < Y; y++){
@@ -223,7 +232,7 @@ public class GameController implements Initializable{
     }
 
     private void gameOver(Button button) {
-        //TODO: add game over  on screen
+        //TODO: add game over splash screen
 //        mapArea.getChildren().remove(grid);
         String cssClass = "game-over";
 

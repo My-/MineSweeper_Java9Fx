@@ -7,7 +7,8 @@ import org.junit.jupiter.api.Test;
 import java.util.HashSet;
 import java.util.Set;
 
-import static org.testng.AssertJUnit.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 
 class NearByPositionsTest {
     @Test

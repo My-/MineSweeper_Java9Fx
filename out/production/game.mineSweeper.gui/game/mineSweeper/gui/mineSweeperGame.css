@@ -16,7 +16,7 @@
     -fx-background-color: darkorange;
 }
 .button-open {
-    -fx-background-color: #aade82
+    -fx-background-color: rgba(170, 222, 130, 0.98)
 }
 .game-over {
     -fx-background-color: #de1237;

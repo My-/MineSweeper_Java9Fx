@@ -3,8 +3,10 @@ package game.mineSweeper.gui;
 import game.mineSweeper.core.PosValue;
 import game.mineSweeper.core.Position;
 import javafx.event.Event;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
@@ -14,14 +16,19 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.layout.*;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.UnaryOperator;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 import game.mineSweeper.core.Game;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 
 public class GameController implements Initializable{
     public GridPane grid;
@@ -234,14 +241,37 @@ public class GameController implements Initializable{
     private void gameOver(Button button) {
         //TODO: add game over splash screen
 //        mapArea.getChildren().remove(grid);
+
         String cssClass = "game-over";
-
         button.getStyleClass().add(cssClass);
-
         minesLeftMenu.setText("Game Over");
+
+        openGameOverWindow();
+
+
+
 //        minesLeftMenu.setStyle("-fx-background-color: #de1237;");
     }
 
+    private void openGameOverWindow() {
+
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader();
+            fxmlLoader.setLocation(getClass().getResource("gameOver.fxml"));
+    /*
+     * if "fx:controller" is not set in fxml
+     * fxmlLoader.setController(NewWindowController);
+     */
+            Scene scene = new Scene(fxmlLoader.load(), 600, 400);
+            Stage stage = new Stage();
+            stage.setTitle("New Window");
+            stage.setScene(scene);
+            stage.show();
+        } catch (IOException e) {
+            Logger logger = Logger.getLogger(getClass().getName());
+            logger.log(Level.SEVERE, "Failed to create new Window.", e);
+        }
+    }
 
 
     @Override

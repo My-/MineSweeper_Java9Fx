@@ -244,7 +244,6 @@ public class GameController implements Initializable{
         // https://stackoverflow.com/questions/1844688/how-to-read-all-files-in-a-folder-from
         String currentPath = System.getProperty("user.dir");
         // TODO: make ir relative to *.class files
-//        this.getClass().getModule().getName();
         String path = currentPath +"/game.mineSweeper.gui/src/sounds";
 
         try (Stream<Path> filePathStream = Files.walk(Paths.get(path))) {
@@ -275,6 +274,10 @@ public class GameController implements Initializable{
 
     private void openWelcomeWindow() {
         openNewWindow("Welcome", "welcome.fxml");
+    }
+
+    public void createAboutWindow(ActionEvent actionEvent) {
+        openNewWindow("About", "about.fxml");
     }
 
     private void openNewWindow(String title, String fxmlFileName){
@@ -309,8 +312,6 @@ public class GameController implements Initializable{
         createGameSounds();
     }
 
-
-
     public void createGameMap(String option) {
         switch (option.toLowerCase()){
             case "":
@@ -335,4 +336,6 @@ public class GameController implements Initializable{
         grid.getChildren().clear();
         createGameMap("same");
     }
+
+
 }

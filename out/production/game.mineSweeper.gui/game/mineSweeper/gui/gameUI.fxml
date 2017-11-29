@@ -27,7 +27,7 @@
                 </Menu>
                 <Menu mnemonicParsing="false" text="Help">
                     <items>
-                        <MenuItem mnemonicParsing="false" text="About Mine Sweeper" />
+                        <MenuItem mnemonicParsing="false" onAction="#createAboutWindow" text="About Mine Sweeper" />
                     </items>
                 </Menu>
             <Menu fx:id="minesLeftMenu" mnemonicParsing="false" text="x/y" />

@@ -5,6 +5,7 @@ module game.mineSweeper.gui {
 
     requires game.mineSweeper.core;
     requires java.logging;
+    requires javafx.media;
 
     exports game.mineSweeper.gui;
 }

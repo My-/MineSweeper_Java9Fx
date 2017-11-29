@@ -1,36 +1,38 @@
 package game.mineSweeper.gui;
 
-import game.mineSweeper.core.PosValue;
 import game.mineSweeper.core.Position;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
-import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
 import javafx.scene.control.ProgressBar;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.*;
 
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Collection;
+import java.util.List;
+import java.util.Random;
 import java.util.ResourceBundle;
-import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.UnaryOperator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import game.mineSweeper.core.Game;
+import javafx.scene.media.AudioClip;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -44,7 +46,8 @@ public class GameController implements Initializable{
     @FXML public ProgressBar mineProgressBar;
 
     private Game game;
-
+    private List<Path> gameSounds;
+    private Random randomNumber = new Random(System.currentTimeMillis());
 
 
     public GridPane getGrid() {
@@ -218,6 +221,41 @@ public class GameController implements Initializable{
         if( !button.getStyleClass().contains(cssClass) ){ // DONE: make it add only once.
             button.getStyleClass().add(cssClass);
         }
+
+        playSound();
+    }
+
+    private void playSound() {
+        int chance = 8; // Adjust chance. Smaller number bigger chance. 1/chance (10 = 1/10, 100 = 1/100, 2 = 1/2)
+        int chanceToPlay = randomNumber.nextInt(chance);
+        if( chanceToPlay < chance -1 ){ return; } // don't play sound if chance to play is not high enough
+
+
+        // https://stackoverflow.com/a/36139922
+        try{
+            int i = randomNumber.nextInt(gameSounds.size()); // get random track
+            System.out.println("Playing: "+ gameSounds.get(i).toUri().toString());
+            new AudioClip(gameSounds.get(i).toUri().toString()).play();
+        }catch(Exception e){
+            System.err.println("Aborted!");
+            e.printStackTrace();
+        }
+    }
+
+    void createGameSounds(){
+        // https://stackoverflow.com/questions/1844688/how-to-read-all-files-in-a-folder-from
+        String currentPath = System.getProperty("user.dir");
+        // TODO: make ir relative to *.class files
+//        this.getClass().getModule().getName();
+        String path = currentPath +"/game.mineSweeper.gui/src/sounds";
+
+        try (Stream<Path> filePathStream = Files.walk(Paths.get(path))) {
+            gameSounds = filePathStream
+                    .filter(Files::isRegularFile)
+                    .collect(Collectors.toList());
+        }catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private void gameOver(Button button) {
@@ -261,6 +299,7 @@ public class GameController implements Initializable{
     public void initialize(URL location, ResourceBundle resources) {
 //        createGrid(10,10);
         createGameMap();
+        createGameSounds();
     }
 
     public void newGame(){
@@ -269,7 +308,7 @@ public class GameController implements Initializable{
     }
 
     public void createGameMap() {
-        game = Game.create(8);
+        game = Game.create(0);
         createGrid(game.sizeX(), game.sizeY());
         updateMineDisplay();
 

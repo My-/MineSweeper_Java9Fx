@@ -2,8 +2,10 @@ package game.mineSweeper.gui;
 
 import game.mineSweeper.core.PosValue;
 import game.mineSweeper.core.Position;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
@@ -11,6 +13,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
+import javafx.scene.control.ProgressBar;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
@@ -32,12 +35,13 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 public class GameController implements Initializable{
-    public GridPane grid;
-    public AnchorPane mapArea;
+    @FXML public GridPane grid;
+    @FXML public AnchorPane mapArea;
 
-    public Menu minesLeftMenu;
-    public Label minesLeft;
-    public Label minesTotal;
+    @FXML public Menu minesLeftMenu;
+    @FXML public Label minesLeft;
+    @FXML public Label minesTotal;
+    @FXML public ProgressBar mineProgressBar;
 
     private Game game;
 
@@ -208,11 +212,15 @@ public class GameController implements Initializable{
     }
 
     private void updateMineDisplay() {
-        String total = ""+ game.getMinesTotal();
-        String left = ""+ game.getMinesLeft();
-        minesLeft.setText(left);
-        minesTotal.setText(total);
+        int total = game.getMinesTotal();
+        int left = game.getMinesLeft();
+        minesLeft.setText(""+ left);
+        minesTotal.setText(""+ total);
         minesLeftMenu.setText(left +"/"+ total);
+
+        // update progress bar
+        double progress = 1.0 -(double)left / total;
+        mineProgressBar.setProgress(progress);
     }
 
 
@@ -294,5 +302,8 @@ public class GameController implements Initializable{
 
     }
 
-
+    @FXML
+    public void closeGame(ActionEvent actionEvent) {
+        Platform.exit();
+    }
 }

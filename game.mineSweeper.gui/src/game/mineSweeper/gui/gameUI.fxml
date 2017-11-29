@@ -22,7 +22,7 @@
                     <items>
                         <MenuItem mnemonicParsing="false" onAction="#newGame" text="New" />
                         <SeparatorMenuItem mnemonicParsing="false" />
-                        <MenuItem mnemonicParsing="false" text="Quit" />
+                        <MenuItem mnemonicParsing="false" onAction="#closeGame" text="Quit" />
                     </items>
                 </Menu>
                 <Menu mnemonicParsing="false" text="Help">
@@ -52,14 +52,14 @@
         </AnchorPane>
       <HBox alignment="BOTTOM_CENTER" prefHeight="0.0" VBox.vgrow="NEVER">
          <children>
-            <Label fx:id="minesLeft" alignment="CENTER" text="~" textAlignment="CENTER" HBox.hgrow="NEVER">
+            <Label fx:id="minesTotal" alignment="CENTER" text="~" textAlignment="CENTER" HBox.hgrow="NEVER">
                <padding>
                   <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
                </padding>
             </Label>
             <AnchorPane prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
                <children>
-                    <ProgressBar fx:id="mineProgress" prefHeight="24.0" prefWidth="290.0" progress="0.34" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                    <ProgressBar fx:id="mineProgressBar" prefHeight="24.0" prefWidth="290.0" progress="0.34" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <padding>
                         <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
                      </padding>
@@ -69,7 +69,7 @@
                   </ProgressBar>
                </children>
             </AnchorPane>
-            <Label fx:id="minesTotal" alignment="CENTER" text="~" HBox.hgrow="NEVER">
+            <Label fx:id="minesLeft" alignment="CENTER" text="~" HBox.hgrow="NEVER">
                <padding>
                   <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
                </padding>

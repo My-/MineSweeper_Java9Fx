@@ -7,14 +7,14 @@
 <?import javafx.scene.text.Font?>
 
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="361.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/9" xmlns:fx="http://javafx.com/fxml/1" fx:controller="game.mineSweeper.gui.GameOver">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="361.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/9" xmlns:fx="http://javafx.com/fxml/1" fx:controller="game.mineSweeper.gui.GameOverController">
    <children>
       <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="361.0" prefWidth="600.0" style="-fx-background-color: #f5540a; -fx-text-fill: #e9e453;" text="Game Over" textAlignment="CENTER">
          <font>
             <Font size="96.0" />
          </font>
       </Label>
-      <Button fx:id="replayButton" onAction="#replayAction" alignment="BOTTOM_CENTER" layoutY="235.0" mnemonicParsing="false" prefHeight="117.0" prefWidth="308.0" style="-fx-background-color: rgba(251, 4, 4, 0.03); -fx-text-fill: #aca716;" text="Play Again" textAlignment="CENTER" underline="true">
+      <Button fx:id="replayButton" onAction="#newGame" alignment="BOTTOM_CENTER" layoutY="235.0" mnemonicParsing="false" prefHeight="117.0" prefWidth="308.0" style="-fx-background-color: rgba(251, 4, 4, 0.03); -fx-text-fill: #aca716;" text="Play Again" textAlignment="CENTER" underline="true">
          <padding>
             <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
          </padding>
@@ -25,7 +25,7 @@
             <Insets bottom="10.0" />
          </opaqueInsets>
       </Button>
-      <Button fx:id="exitButton" onAction="#exitAction" alignment="BOTTOM_CENTER" layoutX="310.0" layoutY="235.0" mnemonicParsing="false" prefHeight="117.0" prefWidth="290.0" style="-fx-background-color: rgba(251, 4, 4, 0.03); -fx-text-fill: #aca716;" text="Exit" textAlignment="CENTER" underline="true">
+      <Button fx:id="exitButton" onAction="#exitGame" alignment="BOTTOM_CENTER" layoutX="310.0" layoutY="235.0" mnemonicParsing="false" prefHeight="117.0" prefWidth="290.0" style="-fx-background-color: rgba(251, 4, 4, 0.03); -fx-text-fill: #aca716;" text="Exit" textAlignment="CENTER" underline="true">
          <padding>
             <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
          </padding>

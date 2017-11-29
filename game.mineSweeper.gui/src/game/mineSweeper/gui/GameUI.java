@@ -52,4 +52,10 @@ public class GameUI extends Application {
         primaryStage.setScene(scene);
         primaryStage.show();
     }
+
+    @Override
+    public void stop() throws Exception {
+        // This method is called then app is cosed
+        System.out.printf("Exit Game");
+    }
 }

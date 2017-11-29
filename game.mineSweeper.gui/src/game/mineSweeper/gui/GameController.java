@@ -2,6 +2,7 @@ package game.mineSweeper.gui;
 
 import game.mineSweeper.core.PosValue;
 import game.mineSweeper.core.Position;
+import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -264,6 +265,7 @@ public class GameController implements Initializable{
      */
             Scene scene = new Scene(fxmlLoader.load(), 600, 400);
             Stage stage = new Stage();
+            stage.initModality(Modality.APPLICATION_MODAL); // makes all other windows(Stage) inactive.
             stage.setTitle("New Window");
             stage.setScene(scene);
             stage.show();
@@ -291,4 +293,6 @@ public class GameController implements Initializable{
         updateMineDisplay();
 
     }
+
+
 }

@@ -109,7 +109,7 @@ public class MineMap implements Iterable<PosValue>{
 
     /**
      * Counts mines in a given map.
-     * In the method here is overloaded Stream.filter() to demonstrate how it cold be done.
+     * In the method here is overloaded Stream.filter() to demonstrate how it could be done.
      *
      * @return number of mines in a given map
      */

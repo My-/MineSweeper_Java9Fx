@@ -45,6 +45,8 @@ public class GameController implements Initializable{
 
     private Game game;
 
+
+
     public GridPane getGrid() {
         return grid;
     }
@@ -52,27 +54,6 @@ public class GameController implements Initializable{
     public void createGrid(int x, int y){
         createButtonGrid(this.grid, x, y);
     }
-
-    private void createImageGrid(GridPane grid, int X, int Y) {
-//        System.out.println(System.getProperty("user.dir")); // find the IDE working dir.
-        File mine2_File = new File("img/mine2.png");
-        Image mine2 = new Image(mine2_File.toURI().toString(), 100, 150, false, false);
-//        Image mine2 = new Image(getClass().getResource("mine2.png").toExternalForm());
-
-
-        for(int x = 0; x < X; x++){
-            for(int y = 0; y < Y; y++){
-                ImageView element = new ImageView(mine2);
-                element.autosize();
-
-                GridPane.setConstraints(element, x, y);
-                grid.getChildren().add(element);
-            }
-        }
-
-    }
-
-
 
     public void createButtonGrid(GridPane grid, int X, int Y){
         // https://stackoverflow.com/a/35345799
@@ -91,16 +72,8 @@ public class GameController implements Initializable{
             grid.getColumnConstraints().add(cc);
         }
 
-        // TODO: function is to long. convert to static method
-        Function<PosValue, Button> createButton = it->{
-            char value = game.getValue(it);
-            Button button = new Button(""+ value);
-            if( '0' <= value && value <= '9' ){ button.getStyleClass().add("button-open"); }
-            GridPane.setConstraints(button, it.Y, it.X);
-            return button;
-        };
 
-        // TODO: function is to long. convert to static method
+        // TODO: function is to long. Can't do static...
         Function<Button, Button> mouseClicked = it->{
             it.setOnMouseClicked(e->{
                 if( e.getButton().equals(MouseButton.SECONDARY) ){ markAsMine((Button) e.getSource()); }
@@ -119,7 +92,7 @@ public class GameController implements Initializable{
 //            return it;
 //        };
 
-        // Slightly shorter/cleaner version (like above)
+        // Slightly shorter/cleaner version (like above commented code)
         UnaryOperator<Button> mouseOff = it -> {
             it.setOnMouseExited(e-> ((Button)e.getSource()).setStyle("-fx-text-fill: rgb(0,0,0);") );
             return it;
@@ -130,7 +103,7 @@ public class GameController implements Initializable{
         // shorten version
         grid.getChildren().addAll(
                 game.stream()
-                        .map(createButton)
+                        .map(Util::createButton)
                         .map(mouseClicked)
                         .map(mouseHover)
                         .collect(Collectors.toList())
@@ -296,7 +269,7 @@ public class GameController implements Initializable{
     }
 
     public void createGameMap() {
-        game = Game.create(0);
+        game = Game.create(8);
         createGrid(game.sizeX(), game.sizeY());
         updateMineDisplay();
 

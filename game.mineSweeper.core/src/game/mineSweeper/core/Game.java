@@ -1,6 +1,7 @@
 package game.mineSweeper.core;
 
 import java.util.Iterator;
+import java.util.Random;
 import java.util.Spliterator;
 import java.util.Spliterators;
 import java.util.function.Predicate;
@@ -12,18 +13,28 @@ public class Game implements Iterable<PosValue>{
     private MineMap userMap;
     private MineMap mineMap;
     private int minesLeft;
+    public static Random random = new Random(System.currentTimeMillis()); // Games random number generator
+    private static int mapInUse = 0; // stores which map was used last
 
     /** Constructors **/
     Game(String[] data) {
         mineMap = new MineMap(data[1]);
         userMap = new MineMap(data[2]);
-        // TODO: map validation
+        // TODO: map validation ...if needed
         minesLeft = mineMap.MINES;
     }
 
     /** Factory **/
-    public static Game create(int picMap){
-        return new Game(Data.MAP[picMap]);
+    public static Game create(String option){
+        int mapsTotal = Data.MAP.length;
+
+        switch(option.toLowerCase()){
+            case "":
+            case "random":
+                mapInUse = random.nextInt(mapsTotal);
+        }
+
+        return new Game(Data.MAP[mapInUse]);
     }
 
     /** Methods **/

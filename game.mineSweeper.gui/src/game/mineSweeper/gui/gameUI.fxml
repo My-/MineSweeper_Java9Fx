@@ -20,7 +20,7 @@
             <menus>
                 <Menu mnemonicParsing="false" text="File">
                     <items>
-                        <MenuItem mnemonicParsing="false" onAction="#newGame" text="New" />
+                  <MenuItem mnemonicParsing="false" onAction="#replayGame" text="Replay" />
                         <SeparatorMenuItem mnemonicParsing="false" />
                         <MenuItem mnemonicParsing="false" onAction="#closeGame" text="Quit" />
                     </items>

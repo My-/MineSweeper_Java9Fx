@@ -14,13 +14,11 @@ import javafx.scene.control.ProgressBar;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.*;
 
-import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Collection;
 import java.util.List;
 import java.util.Random;
 import java.util.ResourceBundle;
@@ -47,7 +45,7 @@ public class GameController implements Initializable{
 
     private Game game;
     private List<Path> gameSounds;
-    private Random randomNumber = new Random(System.currentTimeMillis());
+    private Random randomNumber = Game.random;
 
 
     public GridPane getGrid() {
@@ -268,16 +266,21 @@ public class GameController implements Initializable{
 
         openGameOverWindow();
 
-
-
 //        minesLeftMenu.setStyle("-fx-background-color: #de1237;");
     }
 
     private void openGameOverWindow() {
+        openNewWindow("Game Over", "gameOver.fxml");
+    }
 
+    private void openWelcomeWindow() {
+        openNewWindow("Welcome", "welcome.fxml");
+    }
+
+    private void openNewWindow(String title, String fxmlFileName){
         try {
             FXMLLoader fxmlLoader = new FXMLLoader();
-            fxmlLoader.setLocation(getClass().getResource("gameOver.fxml"));
+            fxmlLoader.setLocation(getClass().getResource( fxmlFileName ));
     /*
      * if "fx:controller" is not set in fxml
      * fxmlLoader.setController(NewWindowController);
@@ -285,8 +288,9 @@ public class GameController implements Initializable{
             Scene scene = new Scene(fxmlLoader.load(), 600, 400);
             Stage stage = new Stage();
             stage.initModality(Modality.APPLICATION_MODAL); // makes all other windows(Stage) inactive.
-            stage.setTitle("New Window");
+            stage.setTitle( title );
             stage.setScene(scene);
+            stage.setAlwaysOnTop(true);
             stage.show();
         } catch (IOException e) {
             Logger logger = Logger.getLogger(getClass().getName());
@@ -298,17 +302,25 @@ public class GameController implements Initializable{
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 //        createGrid(10,10);
-        createGameMap();
+
+        openWelcomeWindow();
+
+        createGameMap("random");
         createGameSounds();
     }
 
-    public void newGame(){
-        grid.getChildren().clear();
-        createGameMap();
-    }
 
-    public void createGameMap() {
-        game = Game.create(0);
+
+    public void createGameMap(String option) {
+        switch (option.toLowerCase()){
+            case "":
+            case "random":
+                game = Game.create("random"); break;
+            case "same":
+                game = Game.create("same"); break;
+            default:
+                System.err.println("Here is no option for: "+ option);
+        }
         createGrid(game.sizeX(), game.sizeY());
         updateMineDisplay();
 
@@ -317,5 +329,10 @@ public class GameController implements Initializable{
     @FXML
     public void closeGame(ActionEvent actionEvent) {
         Platform.exit();
+    }
+
+    public void replayGame(ActionEvent actionEvent) {
+        grid.getChildren().clear();
+        createGameMap("same");
     }
 }

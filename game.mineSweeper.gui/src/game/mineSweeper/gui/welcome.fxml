@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane fx:id="anchorPane" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #d0eb1e;" xmlns="http://javafx.com/javafx/9" xmlns:fx="http://javafx.com/fxml/1" fx:controller="game.mineSweeper.gui.WelcomeController">
+   <children>
+      <Label alignment="CENTER" contentDisplay="CENTER" layoutX="7.0" layoutY="6.0" prefHeight="82.0" prefWidth="588.0" style="-fx-background-color: #1eeb3a;" text="Welcome to MineSweeper game!" textAlignment="CENTER">
+         <font>
+            <Font name="System Bold" size="30.0" />
+         </font>
+      </Label>
+      <Label alignment="CENTER" layoutX="6.0" layoutY="87.0" prefHeight="64.0" prefWidth="588.0" style="-fx-background-color: #eb291e; -fx-text-fill: #d0eb1e;" text="Warning!!" textAlignment="CENTER">
+         <font>
+            <Font name="System Bold" size="39.0" />
+         </font>
+      </Label>
+      <Label alignment="CENTER" layoutX="6.0" layoutY="151.0" prefHeight="48.0" prefWidth="588.0" text="This software is like teenagers, comes with no responsability!! and no waranty!!">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Label>
+      <Label alignment="CENTER" layoutX="6.0" layoutY="199.0" prefHeight="64.0" prefWidth="588.0" style="-fx-background-color: #eb291e; -fx-text-fill: #d0eb1e;" text="Warning!!" textAlignment="CENTER">
+         <font>
+            <Font name="System Bold" size="39.0" />
+         </font>
+      </Label>
+      <Label alignment="CENTER" layoutX="-5.0" layoutY="263.0" prefHeight="48.0" prefWidth="600.0" text="Reduce sound volume!! This software may play some sound at any time!! ">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Label>
+      <Label alignment="BOTTOM_RIGHT" layoutX="414.0" layoutY="349.0" prefHeight="37.0" prefWidth="236.0" text="Created by: Mindaugas Sarskus" AnchorPane.rightAnchor="10.0" />
+      <Label alignment="BOTTOM_LEFT" layoutX="14.0" layoutY="360.0" prefHeight="27.0" prefWidth="326.0" text="December 2017" />
+      <Label alignment="CENTER_RIGHT" layoutY="303.0" prefHeight="48.0" prefWidth="295.0" text="Like risk? To continue tick here: ">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Label>
+      <CheckBox fx:id="checkBox" layoutX="307.0" layoutY="318.0" mnemonicParsing="false" onAction="#goAhead" />
+   </children>
+</AnchorPane>
